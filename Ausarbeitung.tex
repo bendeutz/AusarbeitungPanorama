@@ -65,8 +65,8 @@ $$
 Ein weiteres Beispiel zeigt, dass zwei Graphen, obwohl sie sich auf den ersten Blick vielleicht recht ähnlich sehen, nicht unbedingt isomorph sein müssen. In Abbildung \ref{fig:nisomorph} sehen wir ebenfalls zwei Graphen. Beide haben $5$ Knoten und $6$ Kanten. Um nun argumentieren zu können, warum diese beiden Graphen nicht isomorph sind, brauchen wir eine neue Definition.
 
 \begin{definition}
-Gegeben sei ein Graph $G = (V,E)$. Sei $v\in V$ ein beliebiger Knoten. Wir definieren $$d_G(v) := \sum_{e\in E} 1, \text{wenn }v\in e.$$
-Wir nennen $d_G(v)$ den Grad von $v$. Anders ausgedrückt ist der Grad also die Anzahl aller Kanten, die $v$ mit anderen Knote verbinden.
+Gegeben sei ein Graph $G = (V,E)$. Sei $v\in V$ ein beliebiger Knoten. Wir definieren $$d_G(v) := \sum_{e\in E, v\in e} 1.$$
+Wir nennen $d_G(v)$ den Grad von $v$. Anders ausgedrückt ist der Grad also die Anzahl aller Kanten, die $v$ mit anderen Knoten verbinden.
 \end{definition}
 
 Es ist offensichtlich, dass bei einer isomorphen Abbildung Knoten mit Grad $x$ auf Knoten mit Grad $x$ abgebildet werden müssen.
