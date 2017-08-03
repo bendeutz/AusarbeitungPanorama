@@ -13,8 +13,9 @@
 \usetikzlibrary{arrows} 
 \tikzset{knoten/.style={circle,fill=black,inner sep=1mm}}
 \usepackage[section]{placeins}
-\usepackage{url}
+\usepackage[hyphens]{url}
 \usepackage{hyperref}
+\usepackage{enumitem}
 
 \usepackage{graphicx}
 
@@ -32,6 +33,11 @@
 \newcommand{\babai}{\url{http://people.cs.uchicago.edu/~laci/CV13.pdf}}
 \newcommand{\babaipublications}{\url{http://people.cs.uchicago.edu/~laci/pub/pub.pdf}}
 \newcommand{\wlcoloring}{\url{https://simons.berkeley.edu/sites/default/files/docs/5854/mainhandout.pdf}}
+\newcommand{\jeremykun}{\url{https://jeremykun.com/2015/11/12/a-quasipolynomial-time-algorithm-for-graph-isomorphism-the-details/}}
+\newcommand{\babaivideo}{\url{https://www.youtube.com/watch?v=r-nCYbX_Au0}}
+
+
+\newcommand{\visited}[1]{\emph{zuletzt aufgerufen am #1}}
 
 
 
@@ -62,24 +68,17 @@ $$\varphi =
     \end{cases}  
 $$
 
-\begin{figure}
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.8]{isomorph.png}
+\includegraphics[scale=0.4]{isomorph.png}
 \caption{Zwei isomorphe Graphen}\label{fig:isomorph}
 \end{figure}
 
 
 Ein weiteres Beispiel zeigt, dass zwei Graphen, obwohl sie sich auf den ersten Blick vielleicht recht ähnlich sehen, nicht unbedingt isomorph sein müssen. In Abbildung \ref{fig:nisomorph} sehen wir ebenfalls zwei Graphen. Beide haben $5$ Knoten und $6$ Kanten. Um nun argumentieren zu können, warum diese beiden Graphen nicht isomorph sind, brauchen wir eine neue Definition.
 
-\begin{definition}
-Gegeben sei ein Graph $G = (V,E)$. Sei $v\in V$ ein beliebiger Knoten. Wir definieren $$d_G(v) := \sum_{e\in E, v\in e} 1.$$
-Wir nennen $d_G(v)$ den Grad von $v$. Anders ausgedrückt ist der Grad also die Anzahl aller Kanten, die $v$ mit anderen Knoten verbinden.
-\end{definition}
 
-Es ist offensichtlich, dass bei einer isomorphen Abbildung Knoten mit Grad $x$ auf Knoten mit Grad $x$ abgebildet werden müssen.
-Wenn wir die Grade aller Knoten in den beiden Graphen betrachten, bemerken wir, dass beide Graphen $3$ Knoten mit Grad $2$ und $2$ Knoten mit Grad $3$ besitzen. Im linken Graphen sind die beiden Knoten mit Grad $3$, nämlich c und d, miteinander verbunden. Im rechten Graphen allerdings sind die beiden Knoten mit Grad $3$ nicht verbunden. Dieses Argument reicht aus, um zu zeigen, dass die beiden Graphen nicht isomorph sein können. 
-
-\begin{figure}
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[>=stealth]
     \path node [knoten, label=below:a] (1) at (0,0) {}
@@ -114,6 +113,15 @@ Wenn wir die Grade aller Knoten in den beiden Graphen betrachten, bemerken wir, 
   \end{figure}
 
 
+\begin{definition}
+Gegeben sei ein Graph $G = (V,E)$. Sei $v\in V$ ein beliebiger Knoten. Wir definieren $$d_G(v) := \sum_{e\in E, v\in e} 1.$$
+Wir nennen $d_G(v)$ den Grad von $v$. Anders ausgedrückt ist der Grad also die Anzahl aller Kanten, die $v$ mit anderen Knoten verbinden.
+\end{definition}
+
+Es ist offensichtlich, dass bei einer isomorphen Abbildung Knoten mit Grad $x$ auf Knoten mit Grad $x$ abgebildet werden müssen.
+Wenn wir die Grade aller Knoten in den beiden Graphen betrachten, bemerken wir, dass beide Graphen $3$ Knoten mit Grad $2$ und $2$ Knoten mit Grad $3$ besitzen. Im linken Graphen sind die beiden Knoten mit Grad $3$, nämlich c und d, miteinander verbunden. Im rechten Graphen allerdings sind die beiden Knoten mit Grad $3$ nicht verbunden. Dieses Argument reicht aus, um zu zeigen, dass die beiden Graphen nicht isomorph sein können. 
+
+
 
 \section{L\'{a}szl\'{o} Babai}
 L\'{a}szl\'{o} Babai ist ein in Ungarn geborener Mathematiker. Er ist 1950 in Budapest geboren und U.S.-Staatsbürger. Er ist Professor für Mathematik und Informatik an der Universität von Chicago und beschäftigt sich vornehmlichn mit Kombinatorik, Algorithmentheorie und Komplexitätstheorie. Seine Reputation weißt inzwischen über 200 akademische \emph{papers} auf (Stand: Juli 2017).\footnote{Vgl.\hspace{0.1cm}\babai} \footnote{Vgl. \babaipublications}
@@ -143,39 +151,200 @@ Gegeben sei ein Graph $G = (V,E)$. Wenn alle Knoten aus $V$ denselben Grad haben
 \end{definition}
 Dies möchten wir nun an einem bekannten Beispiel visualisieren. Außerdem wird im Kapitel \nameref{sec:complexity} auf dieses Beispiel zurückgegriffen. 
 
-Wir betrachten den sogenannten Petersen-Graphen, den wir auch in Abbildung \ref{fig:petersen} sehen. Da dieser regulär ist, hilft uns eine Färbung nicht weiter. Um dieses Problem anzugreifen \emph{individualisieren} oder färben wir nun einen Knoten und benutzen anschließend dieselbe Funktiuonalität wie beim Algorithmus der Färbung. Hier brauchen wir jetzt ein Bild...
+Wir betrachten den sogenannten Petersen-Graphen, den wir auch in Abbildung \ref{fig:petersen} sehen. Da dieser regulär ist, hilft uns eine Färbung nicht weiter. Um dieses Problem anzugreifen \emph{individualisieren} oder färben wir nun einen Knoten und benutzen anschließend dieselbe Funktionalität wie beim Algorithmus der Färbung. Dies wird anschaulich in Abbildung \ref{fig:petersen} dargestellt. Im ersten der vier Abbildungen sehen wir den Petersen-Graphen komplett ungefärbt. Im zweiten Bild wird der grüne Knoten individualisiert. Die drei roten Knoten ergeben sich aus dem Färbungsalgorithmus. Diese Färbung ist stabil, da jeder der schwarzen Knoten nun zwei rote und einen schwarzen Nachbarn hat. Wenn diese Aufteilung noch nicht ausreicht, ist es uns möglich einen weiteren Knoten zu individualisieren. Im dritten Bild ist diese durch den gelben Knoten gegeben. In dem daraus resultierenden Färbungsschritt ergibt sich der Graph, den man in der vierten Abbildung sieht. Diese Färbung ist noch nicht stabil und führt in einem weiteren Schritt ohne Individualisierung zur fünften Abbildung. Diese ist nun stabil. \footnote{Vgl. \babaivideo, 00:13:03}
 
 \begin{figure}
-\centering
-\includegraphics[scale=0.8]{petersen.png}
-\caption{Der Petersen-Graph}\label{fig:isomorph}
-\end{figure}
+\hspace{-2.5cm}
+\begin{tikzpicture}[>=stealth]
+    \path node [knoten] (1) at (0,0.5) {}
+          	node [knoten] (2) at (2,0.5)  {}
+          	node [knoten] (3) at (2.5, 2)  {}
+          	node [knoten] (4) at (1,3)  {}
+          	node [knoten] (5) at (-0.5,2)  {}
+          	node [knoten] (6) at (0.25,1.75)  {}
+          	node [knoten] (7) at (0.5,1)  {}
+          	node [knoten] (8) at (1.5,1)  {}
+          	node [knoten] (9) at (1.75,1.75)  {}
+          	node [knoten] (10) at (1,2.25)  {}
+          	
+	     (1) edge (2)
+	     (2) edge (3)
+	     (3) edge (4)
+	     (4) edge (5)
+	     (5) edge (1)
+	     
+	     (5) edge (6)
+	     (1) edge (7)
+	     (2) edge (8)
+	     (3) edge (9)
+	     (4) edge (10)
+	     
+	     (6) edge (9)
+	     (6) edge (8)
+	     (10) edge (7)
+	     (10) edge (8)
+	     (9) edge (7)
+	     ;
+	     
+	     \path node [knoten, fill=red] (1) at (3.5,0.5) {}
+          	node [knoten] (2) at (5.5,0.5)  {}
+          	node [knoten] (3) at (6, 2)  {}
+          	node [knoten, fill=red] (4) at (4.5,3)  {}
+          	node [knoten, fill=green] (5) at (3,2)  {}
+          	node [knoten, fill=red] (6) at (3.75,1.75)  {}
+          	node [knoten] (7) at (4,1)  {}
+          	node [knoten] (8) at (5,1)  {}
+          	node [knoten] (9) at (5.25,1.75)  {}
+          	node [knoten] (10) at (4.5,2.25)  {}
+          	
+	        (1) edge (2)
+	     (2) edge (3)
+	     (3) edge (4)
+	     (4) edge (5)
+	     (5) edge (1)
+	     
+	     (5) edge (6)
+	     (1) edge (7)
+	     (2) edge (8)
+	     (3) edge (9)
+	     (4) edge (10)
+	     
+	     (6) edge (9)
+	     (6) edge (8)
+	     (10) edge (7)
+	     (10) edge (8)
+	     (9) edge (7)
+	     ;
+	     
+	      \path node [knoten, fill=red] (1) at (7,0.5) {}
+          	node [knoten] (2) at (9,0.5)  {}
+          	node [knoten] (3) at (9.5, 2)  {}
+          	node [knoten, fill=red] (4) at (8,3)  {}
+          	node [knoten, fill=green] (5) at (6.5,2)  {}
+          	node [knoten, fill=red] (6) at (7.25,1.75)  {}
+          	node [knoten] (7) at (7.5,1)  {}
+          	node [knoten] (8) at (8.5,1)  {}
+          	node [knoten,fill=yellow] (9) at (8.75,1.75)  {}
+          	node [knoten] (10) at (8,2.25)  {}
+          	
+	       (1) edge (2)
+	     (2) edge (3)
+	     (3) edge (4)
+	     (4) edge (5)
+	     (5) edge (1)
+	     
+	     (5) edge (6)
+	     (1) edge (7)
+	     (2) edge (8)
+	     (3) edge (9)
+	     (4) edge (10)
+	     
+	     (6) edge (9)
+	     (6) edge (8)
+	     (10) edge (7)
+	     (10) edge (8)
+	     (9) edge (7)
+	     ;
+	     
+	       \path node [knoten, fill=red] (1) at (10.5,0.5) {}
+          	node [knoten] (2) at (12.5,0.5)  {}
+          	node [knoten,fill=orange] (3) at (13, 2)  {}
+          	node [knoten, fill=red] (4) at (11.5,3)  {}
+          	node [knoten, fill=green] (5) at (10,2)  {}
+          	node [knoten, fill=blue] (6) at (10.75,1.75)  {}
+          	node [knoten, fill=orange] (7) at (11,1)  {}
+          	node [knoten] (8) at (12,1)  {}
+          	node [knoten,fill=yellow] (9) at (12.25,1.75)  {}
+          	node [knoten] (10) at (11.5,2.25)  {}
+          	
+	       (1) edge (2)
+	     (2) edge (3)
+	     (3) edge (4)
+	     (4) edge (5)
+	     (5) edge (1)
+	     
+	     (5) edge (6)
+	     (1) edge (7)
+	     (2) edge (8)
+	     (3) edge (9)
+	     (4) edge (10)
+	     
+	     (6) edge (9)
+	     (6) edge (8)
+	     (10) edge (7)
+	     (10) edge (8)
+	     (9) edge (7)
+	     ;
+	     
+	      \path node [knoten, fill=red] (1) at (14,0.5) {}
+          	node [knoten, fill=purple] (2) at (16,0.5)  {}
+          	node [knoten,fill=orange] (3) at (16.5, 2)  {}
+          	node [knoten, fill=red] (4) at (15,3)  {}
+          	node [knoten, fill=green] (5) at (13.5,2)  {}
+          	node [knoten, fill=blue] (6) at (14.25,1.75)  {}
+          	node [knoten, fill=orange] (7) at (14.5,1)  {}
+          	node [knoten] (8) at (15.5,1)  {}
+          	node [knoten,fill=yellow] (9) at (15.75,1.75)  {}
+          	node [knoten,fill=purple] (10) at (15,2.25)  {}
+          	
+	       (1) edge (2)
+	     (2) edge (3)
+	     (3) edge (4)
+	     (4) edge (5)
+	     (5) edge (1)
+	     
+	     (5) edge (6)
+	     (1) edge (7)
+	     (2) edge (8)
+	     (3) edge (9)
+	     (4) edge (10)
+	     
+	     (6) edge (9)
+	     (6) edge (8)
+	     (10) edge (7)
+	     (10) edge (8)
+	     (9) edge (7)
+	     ;
+  \end{tikzpicture}
+  \caption{Zwei Individualisierungen des Petersen-Graphen}\label{fig:petersen}
+  \end{figure}
 
 \subsection{Johnson-Graphen}
-Kurze Erklärung was Johnson Graphen sind und das deren hohe Symmetrie zu Problemen bei der Färbung führt. Alles aus dem VIdeo von Babai zitieren mit Zeitangaben!
+In diesem Abschnitt werden wir kurz vorstellen, was Johnson-Graphen sind. Sie sind laut Babai \emph{an unspeakable misery}\footnote{\jeremykun} im Zusammenhang mit dem Problem der Graphenisomorphie. Ohne genauer darauf einzugehen, resultiert dies aus der starken Symmetrie dieser Graphen. 
 
-\begin{figure}
+\begin{definition}
+Wir definieren Johnson-Graphen mit Hilfe von zwei natürlichen Parametern $n$ und $k$, wobei $k>=1$ und $n\geq 2k+1$ gilt. Wir schreiben kurz $J(n,k)$. Jeder Knoten steht dabei für eine Teilmenge der Menge der $k$-elementigen Teilmengen von $n$. Wir definieren zwei Knoten als benachbart, wenn der Schnitt der beiden Teilmengen $k-1$ Elemente hat. 
+\end{definition}
+
+Als Beispiel sehen wir in Abbildung \ref{fig:j52} den Johnson-Graphen $J(5,2)$. Die jeweils rot markierten Punkte symbolisieren dabei die jeweilige Teilmenge.
+
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.8]{j52.png}
+\includegraphics[scale=0.5]{j52.png}
 \caption{Der Johnson-Graph $J(5,2)$}\label{fig:j52}
 \end{figure}
 
 \section{Einordnung in die Komplexitätsklassen}\label{sec:complexity}
 
-
+\clearpage
 \section{Quellen}
 
-\begin{thebibliography}{9}
-     \bibitem{MyFavorite}
-         {\sc Lamport, L.,}
-         ``\LaTeX - A Document Preparation System'',
-         Addison-Wesley, 1998.
+\noindent
+{\textbf{Schriftliche Internetquellen}}
+\begin{enumerate}[label={[\arabic*]}]
+\item \babai, \visited{03.08.2017}
+\item \babaipublications, \visited{03.08.2017}
+\item \jeremykun, \visited{03.08.2017}
+\item \wlcoloring, \visited{03.08.2017}
+\end{enumerate}
 
-    \bibitem{BobsPaper}
-         {\sc Fillioque R.} and {\sc Heliotrope, B.,}
-         {\em Why Fermat's last theorem is really a lemma,}
-         American Mathematical Weekly,
-         Vol. 7, No. 1, pp 115-116, 1998.
+\bigskip
+\noindent
+{\textbf{Videoquellen}}
+\begin{enumerate}[label={[\arabic*]}]
+\item \babaivideo, \visited{03.08.2017}
+\end{enumerate}
 
-\end{thebibliography}
+
+
 \end{document}
