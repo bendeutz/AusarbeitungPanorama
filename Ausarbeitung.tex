@@ -13,6 +13,8 @@
 \usetikzlibrary{arrows} 
 \tikzset{knoten/.style={circle,fill=black,inner sep=1mm}}
 \usepackage[section]{placeins}
+\usepackage{url}
+\usepackage{hyperref}
 
 \usepackage{graphicx}
 
@@ -25,6 +27,11 @@
 \newenvironment{proof}{{\sc Proof:}}{~\hfill QED}
 \newenvironment{AMS}{}{}
 \newenvironment{keywords}{}{}
+
+%Quellen
+\newcommand{\babai}{\url{http://people.cs.uchicago.edu/~laci/CV13.pdf}}
+\newcommand{\babaipublications}{\url{http://people.cs.uchicago.edu/~laci/pub/pub.pdf}}
+\newcommand{\wlcoloring}{\url{https://simons.berkeley.edu/sites/default/files/docs/5854/mainhandout.pdf}}
 
 
 
@@ -109,19 +116,43 @@ Wenn wir die Grade aller Knoten in den beiden Graphen betrachten, bemerken wir, 
 
 
 \section{L\'{a}szl\'{o} Babai}
-L\'{a}szl\'{o} Babai ist ein 
+L\'{a}szl\'{o} Babai ist ein in Ungarn geborener Mathematiker. Er ist 1950 in Budapest geboren und U.S.-Staatsbürger. Er ist Professor für Mathematik und Informatik an der Universität von Chicago und beschäftigt sich vornehmlichn mit Kombinatorik, Algorithmentheorie und Komplexitätstheorie. Seine Reputation weißt inzwischen über 200 akademische \emph{papers} auf (Stand: Juli 2017).\footnote{Vgl.\hspace{0.1cm}\babai} \footnote{Vgl. \babaipublications}
 
-\section{Geschichte der Graphenisomorphie}
+\section{Geschichte der Graphenisomorphie} \label{sec:historical}
+
 In diesem Teil möchten wir einen kleinen historischen Überblick über Ergebnisse im Bereich der Graphenisomorphie geben. Dies schließt die neuesten Erkenntnisse Babais mit ein.
 \subsection{Historisches}
 
 \subsection{Babais Durchbruch}
 
 Im September 2015
-\section{Kapitel zu Johnsongraphen und Färbung}
+\section{Standardheuristiken im Algorithmus und Probleme}
+In den folgenden drei Unterkapiteln wollen wir zwei Standardheuristiken und eine Gruppe von Graphen vorstellen, bei denen diese Standardheuristiken problematisch sind. Weiterhin bildet das zweite Unterkapitel die Grundlage für einen Teil der später in dieser Arbeit besprochenen Komplexitätsanalyse.
 
-Den Johnson Graph in Abbildung \ref{fig:j52} brauchen wir sicherlich noch irgendwo...
+\subsection{Färbung}
+Färbung bedeutet im Bereich der Graphentheorie im Allgemeinen eine besondere Art des Markierens. Dabei unterscheidet man zwischen gültigen und nicht gültigen Färbungen. Die Gültigkeit entscheidet sich dadurch, ob zwei benachbarte Knoten eine gemeinsame Farbe besitzen. Tun sie dies, ist die Färbung nicht gültig. Wir beschäftigen uns in dieser Ausarbeitung jedoch nicht mit gegebenen Färbungen von Graphen, sondern mit einem Algorithmus, der eine Färbung erzeugt. Wie im Kapitel \glqq\nameref{sec:historical}\grqq\ bereits erwähnt gibt es k-dimensionale Weisfeiler-Leman Algorithmen. Wir fokussieren uns hier auf den 1-dimensionalen Fall, den man auch \emph{colour refinement} nennt.
 
+Der Algorithmus startet dabei auf einem Graphen, bei dem alle Knoten dieselbe Farbe haben. Anschließend beginnt einer Abfolge von Schritten, bei denen man zwei beliebige Knoten $v, w$ und die Anzahl der jeweiligen Nachbarn mit der gleichen Farbe betrachtet. Wenn eine Farbe $c$ existiert, sodass $v$ und $w$ eine verschiedene Anzahl von Nachbarn mit der Farbe $c$ haben, dann erhalten $v$ und $w$ verschiedene Farben. Wichtig ist in diesem Zusammenhang, dass die neuen Färbungen erst am Ende der gesamten Abfolge gemacht werden. Um sich dies verdeutlichen zu können sei an dieser Stelle festgehalten, dass nach der ersten Abfolge von Schritten eine Färbung entsteht, die den Grad jedes Knoten bestimmt. Diese Abfolge wird nun sooft wiederholt, bis die Färbung stabil ist, d.h. keine Farbänderungen mehr auftreten. 
+
+Diese Färbungen sind ein erster Schritt, um zwei gegebene Graphen auf Isomorphie zu untersuchen. Gegeben seien zwei Graphen $G$ und $G\rq{}$ auf denen stabile Färbungen durch unseren Algorithmus entstanden sind. Diese Färbungen können nun auf Isormophie untersucht werden. Sind die Färbungen nicht isomorph, dann sind es auch die Graphen nicht. Die Umkehrung gilt jedoch im Allgemeinen nicht. Weiterhin kann Färbung natürlich auch genutzt werden, um die Anzahl der zu untersuchenden Abbildungen zu reduzieren, da nur entsprechend gefärbte Knoten in $G$ auf entsprechend gefärbte Knoten in $G\rq{}$ abgebildet werden können.\footnote{Vgl. \wlcoloring} 
+
+\subsection{Individualisierung}
+Färbungen nutzen die Strukturen, die bereits auf einem Graphen gegeben sind. Es gibt jedoch Graphen auf denen Färbungen zwar stabil sind, aber uns keinen Schritt weiterbringen. Dabei handelt es sich um reguläre Graphen.
+\begin{definition}
+Gegeben sei ein Graph $G = (V,E)$. Wenn alle Knoten aus $V$ denselben Grad haben, nennen wir den Graphen $G$ regulär.
+\end{definition}
+Dies möchten wir nun an einem bekannten Beispiel visualisieren. Außerdem wird im Kapitel \nameref{sec:complexity} auf dieses Beispiel zurückgegriffen. 
+
+Wir betrachten den sogenannten Petersen-Graphen, den wir auch in Abbildung \ref{fig:petersen} sehen. Da dieser regulär ist, hilft uns eine Färbung nicht weiter. Um dieses Problem anzugreifen \emph{individualisieren} oder färben wir nun einen Knoten und benutzen anschließend dieselbe Funktiuonalität wie beim Algorithmus der Färbung. Hier brauchen wir jetzt ein Bild...
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{petersen.png}
+\caption{Der Petersen-Graph}\label{fig:isomorph}
+\end{figure}
+
+\subsection{Johnson-Graphen}
+Kurze Erklärung was Johnson Graphen sind und das deren hohe Symmetrie zu Problemen bei der Färbung führt. Alles aus dem VIdeo von Babai zitieren mit Zeitangaben!
 
 \begin{figure}
 \centering
@@ -129,7 +160,10 @@ Den Johnson Graph in Abbildung \ref{fig:j52} brauchen wir sicherlich noch irgend
 \caption{Der Johnson-Graph $J(5,2)$}\label{fig:j52}
 \end{figure}
 
-\section{Einordnung in die Komplexitätsklassen}
+\section{Einordnung in die Komplexitätsklassen}\label{sec:complexity}
+
+
+\section{Quellen}
 
 \begin{thebibliography}{9}
      \bibitem{MyFavorite}
